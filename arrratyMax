@@ -1,0 +1,71 @@
+#include<iostream>
+using namespace std;
+
+int maxSum(int a[], int left, int right, int& start, int& end);
+int maxSubsequenceSum(int a[], int size, int& start, int& end){
+	return maxSum(a, 0, size-1, start, end);
+}
+
+int maxSum(int a[], int left, int right, int& start, int& end) {
+	int maxLeft, maxRight, center;             //左右半部的最长子序列和
+	int leftSum = 0, rightSum = 0;             //左右半部的最大子序列和
+	int maxLeftTmp = 0, maxrightTmp = 0;       //情况三中从中间拓展的左右子数列最大值
+	int startL, startR, endL, endR;            //左右最大连续子数列的起点和终点
+
+	if (right == left){             //当数组被无数分割时，只剩下一个元素时，停止递归
+		start = end = left;
+		return a[left] > 0 ? a[left] : 0;
+	}
+
+	center = (right + left) / 2;
+	maxLeft= maxSum (a, left, center, startL, endL);
+	maxRight= maxSum(a, center+1, right, startR, endR);
+
+	start = center;
+	for (int i = center; i >= left; --i) {
+		leftSum += a[i];
+		if (leftSum > maxLeftTmp) {
+			maxLeftTmp = leftSum;
+			cout << maxLeftTmp << endl;
+			start = i;
+		}
+	}
+	end = center + 1;
+	for (int i = center+1; i <= right; ++i) {
+		rightSum += a[i];
+		if (rightSum > maxrightTmp) {
+			maxrightTmp = rightSum;
+			cout << maxrightTmp << endl;
+			end = i;
+		}
+	}
+
+	//找三种情况的最大值
+	if (maxLeft > maxRight) {
+		if (maxLeft > maxLeftTmp + maxrightTmp) {
+			start = startL;
+			end = endL;
+			return maxLeft;
+		}
+		else return maxLeftTmp + maxrightTmp;
+	}
+	else {
+		if (maxRight > maxLeftTmp + maxrightTmp) {
+			start = startR;
+			end   = endR;
+			return maxRight;
+		}
+		else return maxLeftTmp + maxrightTmp;
+	}	
+}
+int main()
+{
+	int a[] = { 1,-1,4,-6 };
+	int size = sizeof(a)/ sizeof(a[0]);
+	int start = 0;
+	int end = size - 1;
+
+	cout<<maxSubsequenceSum(a, size, start, end)<<endl;
+	system("pause");
+	return 0;
+}
