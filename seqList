@@ -108,6 +108,20 @@ void seqList<elemtype>::remove(int i){
     }
     --currentLenth;
 } 
+template<class elemtype>
+void seqList<elemtype>::erase(int i){
+    elemtype tmp=data[i];
+    int cnt=0;
+    for(int j=0;j<current;++j){
+        if(tmp==data[j]){
+            ++cnt;
+        }
+        else{
+            data[j-cnt]=data[j]
+        }
+    }
+    currentLenth-=cnt;
+}
 
 int main(){
     system("pause");
