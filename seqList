@@ -32,11 +32,12 @@ public:
     int search(const elemtype &x);
     elemtype visit(int i) const;
     void traverse()const;
+    void erase(int i);
 };
 //构造函数的实现
 template<class elemtype>
-seqList<elemtype>::seqList(int initSize=10){
-    data=new elemtyp[initSize];
+seqList<elemtype>::seqList(int initSize){
+    data=new elemtype[initSize];
     maxSize=initSize;
     currentLenth=0;
 }
@@ -71,7 +72,8 @@ void seqList<elemtype>::traverse()const{
 //search函数的实现
 template<class elemtype>
 int seqList<elemtype>::search(const elemtype& x){
-    for(int i=0;i<currentLenth&&x!=data[i];++i);
+    int i=0;
+    for(;i<currentLenth&&x!=data[i];++i);
     if(i==currentLenth)
         return -1;
     else return i;
@@ -84,7 +86,7 @@ void seqList<elemtype>::doubleSpace(){
 
     data =new elemtype[maxSize];
     for(int i=0;i<currentLenth;++i){
-        data[i]=tmp[i]
+        data[i]=tmp[i];
     }
     delete[] tmp;
 }
@@ -108,21 +110,21 @@ void seqList<elemtype>::remove(int i){
     }
     --currentLenth;
 } 
+//删除等于i位置的元素
 template<class elemtype>
 void seqList<elemtype>::erase(int i){
     elemtype tmp=data[i];
     int cnt=0;
-    for(int j=0;j<current;++j){
+    for(int j=0;j<currentLenth;++j){
         if(tmp==data[j]){
             ++cnt;
         }
         else{
-            data[j-cnt]=data[j]
+            data[j-cnt]=data[j];
         }
     }
     currentLenth-=cnt;
 }
-
 int main(){
     system("pause");
     return 0;
