@@ -8,7 +8,7 @@ public:
     virtual int lenth() const=0;
     virtual void insert(int i,const elemtype &x)=0;
     virtual void remove(int i)=0;
-    virtual elemtype search(const elemtype &x)=0;
+    virtual int search(const elemtype &x)const=0;
     virtual elemtype visit(int i) const=0;
     virtual void traverse()const=0;
     virtual ~list() {};
@@ -29,7 +29,7 @@ public:
     int lenth() const;
     void insert(int i,const elemtype &x);
     void remove(int i);
-    int search(const elemtype &x);
+    int search(const elemtype &x)const;
     elemtype visit(int i) const;
     void traverse()const;
     void erase(int i);
@@ -71,7 +71,7 @@ void seqList<elemtype>::traverse()const{
 }
 //search函数的实现
 template<class elemtype>
-int seqList<elemtype>::search(const elemtype& x){
+int seqList<elemtype>::search(const elemtype& x)const{
     int i=0;
     for(;i<currentLenth&&x!=data[i];++i);
     if(i==currentLenth)
