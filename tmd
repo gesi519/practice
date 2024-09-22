@@ -91,7 +91,7 @@ void sLinkList<elemtype>::clear(){
     while(p!=NULL){      //删除所有节点
         q=p->next;
         delete p;
-        q=p;
+        p=q;
     }
     currentLenth=0;
 }
@@ -167,30 +167,31 @@ void sLinkList<elemtype>::push_back(const elemtype& x){
 }
 
 
-// void test(){
-//     sLinkList<int> obj;
+void test(){
+    sLinkList<int> obj;
 
 //     obj.push_back(20);;
 //     obj.push_back(10);
 //     obj.push_back(20);
 //     obj.push_back(30);
     
-//     obj.traverse();
-//     obj.lenth();
+    obj.traverse();
+    std::cout<<obj.lenth()<<std::endl;
+    obj.insert(0,100);
+    obj.insert(1,100);
+    obj.insert(2,100);
+    obj.traverse();
 
-//     obj.insert(2,100);
-//     obj.traverse();
+    obj.remove(1);
+    obj.traverse();
 
-//     obj.remove(1);
-//     obj.traverse();
-
-//     obj.visit(2);
-//     obj.search(10);
-//     obj.traverse();
-// }
+    std::cout<<obj.visit(1)<<std::endl;
+    std::cout<<obj.search(100)<<std::endl;
+    obj.traverse();
+}
 
 int main(){
-    //test();
+    test();
     system("pause");
     return 0;
 }
