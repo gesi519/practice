@@ -1,0 +1,197 @@
+#include<iostream>
+
+template<class elemtype>
+class list
+{
+public:
+    virtual void clear()=0;
+    virtual int lenth() const=0;
+    virtual void insert(int i,const elemtype &x)=0;
+    virtual void remove(int i)=0;
+    virtual int search(const elemtype &x)const=0;
+    virtual elemtype visit(int i) const=0;
+    virtual void traverse()const=0;
+    virtual void push_back(const elemtype& x)=0;
+};
+
+template<class elemtype>
+class sLinkList:public list<elemtype>
+{
+private:
+    struct node{
+        elemtype data;
+        node* next;
+
+        node(const elemtype&x,node*n=NULL)
+        {
+            data=x;
+            next=n;
+        }
+
+        node():next(NULL){}
+        ~node(){}
+
+        
+    };
+    node* head;
+    int currentLenth;
+
+    node* move(int i)const;//返回第i个节点的地址
+
+public:
+    sLinkList();
+    ~sLinkList(){
+        clear();
+        delete head;
+    }
+    void clear();
+    int lenth() const;
+    void insert(int i,const elemtype &x);
+    void remove(int i);
+    int search(const elemtype &x)const;
+    elemtype visit(int i) const;
+    void traverse()const;
+    void push_back(const elemtype& x);
+    
+};
+
+template<class elemtype>
+typename sLinkList<elemtype>::node* sLinkList<elemtype>::move(int i)const{
+//sLinkList<elemtype>::move(int i)const 是一坨
+//sLinkList<elemtype>::node 是另一坨
+//实际除去域的话写作  node*move(int i)cons 
+//-->node*sLinkList<elemtype>::move(int i)const
+//-->sLinkList<elemtype>::node*sLinkList<elemtype>::move(int i)const
+    node* p=head;
+    
+    while(i-->=0){
+        p=p->next;
+    }
+    return p;
+    
+}
+
+template<class elemtype>
+int sLinkList<elemtype>::lenth() const{
+    return currentLenth;
+}
+
+//构造函数，创建一个新的空单链表
+template<class elemtype>
+sLinkList<elemtype>::sLinkList(){
+    head=new node;
+    currentLenth=0;
+}
+
+template<class elemtype>
+void sLinkList<elemtype>::clear(){
+    node* p=head-> next;
+    node* q;
+    head->next=NULL;     //该步释放的是head节点中next指针，让该next为空，并没有影响到得到next地址的p
+    while(p!=NULL){      //删除所有节点
+        q=p->next;
+        delete p;
+        q=p;
+    }
+    currentLenth=0;
+}
+
+template<class elemtype>
+void sLinkList<elemtype>::insert(int i,const elemtype &x){
+    node* pos;
+
+    pos=move(i-1);                  //得到第i-1个节点
+    
+
+    
+    
+    pos->next=new node(x,pos->next);
+    /*先建立新节点，再将原来第i个节点的地址赋给新节点的next，
+    第i-1的节点的next变成了新节点的*/
+    ++currentLenth;
+    
+}
+
+template<class elemtype>
+void sLinkList<elemtype>::remove(int i){
+    node* pos,*pos1;
+    
+    pos=move(i-1);
+    pos1=pos->next;
+    pos->next=pos1->next;
+    delete pos1;
+    --currentLenth;
+}
+
+//真tm绝了，sLinkList里search没加const，总是报错（在main里报错），纯虚函数不能做对象
+//不允许使用抽象类类型 "sLinkList<int>" 的对象:
+//纯虚拟 函数 "list<elemtype>::search [其中 elemtype=int]" 没有强制替代项
+template<class elemtype>
+int sLinkList<elemtype>::search(const elemtype &x)const{
+    node* pos=head->next;
+    int i=0;
+
+    while(pos!=NULL&&pos->data!=x){
+        pos=pos->next;
+        ++i;
+    }
+    if(pos==NULL) return -1;
+    else return i;
+}
+
+template<class elemtype>
+elemtype sLinkList<elemtype>::visit(int i) const{
+    return move(i)->data;
+}
+
+template<class elemtype>
+void sLinkList<elemtype>::traverse()const{
+    node* pos=head->next;
+    std::cout<<std::endl;
+    while (pos!=NULL)
+    {
+        std::cout<<pos->data<<" ";
+        pos=pos->next;
+    }
+    std::cout<<std::endl;
+}
+
+template<class elemtype>
+void sLinkList<elemtype>::push_back(const elemtype& x){
+    node* pos=head->next;
+    while(pos!=NULL){
+        pos=pos->next;
+    }
+    pos=new node(x,NULL);
+    ++currentLenth;
+}
+
+
+// void test(){
+//     sLinkList<int> obj;
+
+//     obj.push_back(20);;
+//     obj.push_back(10);
+//     obj.push_back(20);
+//     obj.push_back(30);
+    
+//     obj.traverse();
+//     obj.lenth();
+
+//     obj.insert(2,100);
+//     obj.traverse();
+
+//     obj.remove(1);
+//     obj.traverse();
+
+//     obj.visit(2);
+//     obj.search(10);
+//     obj.traverse();
+// }
+
+int main(){
+    //test();
+    system("pause");
+    return 0;
+}
+//g++ .cpp -o ./a
