@@ -157,12 +157,23 @@ void sLinkList<elemtype>::traverse()const{
 }
 
 template<class elemtype>
-void sLinkList<elemtype>::push_back(const elemtype& x){
-    node* pos=head->next;
-    while(pos!=NULL){
-        pos=pos->next;
+void sLinkList<elemtype>::push_back(const elemtype& x){    
+    // node** ppos=&(head->next);
+    // while(*ppos!=NULL){
+    //     *ppos=(*ppos)->next;
+    // }
+    // *ppos=new node(x,NULL);
+    
+    if(head->next==NULL){
+        head->next=new node(x,NULL);
     }
-    pos=new node(x,NULL);
+    else{
+        node* pos=head->next;
+        while(pos->next!=NULL){
+            pos=pos->next;
+        }
+        pos->next=new node(x,NULL);
+    }
     ++currentLenth;
 }
 
@@ -170,24 +181,29 @@ void sLinkList<elemtype>::push_back(const elemtype& x){
 void test(){
     sLinkList<int> obj;
 
-//     obj.push_back(20);;
-//     obj.push_back(10);
-//     obj.push_back(20);
-//     obj.push_back(30);
+    obj.push_back(20);
+    obj.traverse();
+
+    obj.push_back(10);
+    obj.traverse();
+
+    obj.push_back(20);
+    obj.traverse();
     
+    obj.push_back(30);
     obj.traverse();
+    
     std::cout<<obj.lenth()<<std::endl;
-    obj.insert(0,100);
-    obj.insert(1,100);
-    obj.insert(2,100);
-    obj.traverse();
 
-    obj.remove(1);
-    obj.traverse();
+    //obj.insert(2,100);
+    //obj.traverse();
 
-    std::cout<<obj.visit(1)<<std::endl;
-    std::cout<<obj.search(100)<<std::endl;
-    obj.traverse();
+    //obj.remove(1);
+    //obj.traverse();
+
+    //obj.visit(2);
+    //obj.search(10);
+    //obj.traverse();
 }
 
 int main(){
@@ -195,4 +211,4 @@ int main(){
     system("pause");
     return 0;
 }
-//g++ .cpp -o ./a
+//g++ farwithson.cpp -o ./a
